@@ -28,6 +28,7 @@ def rekomendasi_servis():
     - Servis terakhir pada: {servis.get('tanggal')} dengan ODO: {servis.get('odo')} km
     - Jenis servis terakhir: {', '.join(servis.get('jenisServis', []))}
 
+    Kamu juga akan menghitung untuk rekomendasi kapan pergantian oli berikutnya berdasarkan data kendaraan berikan estimasi kilometer selanjutnya dan juga berdasarkan durasi waktu.
     Berikan rekomendasi dalam 1 paragraf singkat dan mudah dipahami.
     """
 
