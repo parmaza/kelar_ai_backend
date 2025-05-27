@@ -38,7 +38,7 @@ Berikan rekomendasi servis berikutnya berdasarkan data berikut:
 
 Kamu juga akan menghitung:
 1. Estimasi kilometer berikutnya untuk servis rutin (termasuk ganti oli)  
-2. Estimasi waktu berikutnya (misal: dalam 6 bulan)  
+2. Estimasi waktu berikutnya (dan sebutkan juga tanggal dan hari tepatnya dihitung dari tanggal servis terakhir)  
 
 Berikan jawaban dalam 1 paragraf singkat yang mudah dipahami.
 """
