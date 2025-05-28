@@ -37,19 +37,18 @@ Berikan rekomendasi servis berikutnya berdasarkan data berikut:
 - Saran Mekanik    : {saran_mekanik}
 Kamu bisa memberikan saran terkait kendaraan tersebut mengambil dari luar (berita terkini)
 Berikan jawaban dalam 1 paragraf singkat yang mudah dipahami.
-
+Setelah paragraf rekomendasi, tambahkan 2 baris di akhir:
 jika ada servis ganti oli maka kamu akan melakukan:
 di baris terpisah TULIS DENGAN TEPAT seperti berikut:
-KM_BERIKUTNYA: [angka km berikutnya]
-TANGGAL_BERIKUTNYA: [tanggal format dd MMMM yyyy]
+KM_BERIKUTNYA: [angka] (tanpa titik, tanpa satuan, hanya angka)
+TANGGAL_BERIKUTNYA: [tanggal lengkap, misal 15 Agustus 2025]
 Contoh:
 KM_BERIKUTNYA: 5000
-TANGGAL_BERIKUTNYA: 29 September 2025
+TANGGAL_BERIKUTNYA: 15 Agustus 2025
 
 Jika tidak ada estimasi, tulis:
 KM_BERIKUTNYA: -
 TANGGAL_BERIKUTNYA: -
-
 (hindari kata naratif di depan/di belakang tag!)."""
 
     try:
