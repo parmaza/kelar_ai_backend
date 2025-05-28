@@ -39,9 +39,18 @@ Kamu bisa memberikan saran terkait kendaraan tersebut mengambil dari luar (berit
 Berikan jawaban dalam 1 paragraf singkat yang mudah dipahami.
 
 jika ada servis ganti oli maka kamu akan melakukan:
-1. Estimasi kilometer berikutnya untuk servis rutin dengan format KM_BERIKUTNYA
-2. Estimasi waktu berikutnya (dan sebutkan juga tanggal dan hari tepatnya dihitung dari tanggal servis terakhir) dengan format TANGGAL_BERIKUTNYA
-"""
+di baris terpisah TULIS DENGAN TEPAT seperti berikut:
+KM_BERIKUTNYA: [angka km berikutnya]
+TANGGAL_BERIKUTNYA: [tanggal format dd MMMM yyyy]
+Contoh:
+KM_BERIKUTNYA: 5000
+TANGGAL_BERIKUTNYA: 29 September 2025
+
+Jika tidak ada estimasi, tulis:
+KM_BERIKUTNYA: -
+TANGGAL_BERIKUTNYA: -
+
+(hindari kata naratif di depan/di belakang tag!)."""
 
     try:
         response = client.chat.completions.create(
