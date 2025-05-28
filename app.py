@@ -35,12 +35,12 @@ Berikan rekomendasi servis berikutnya berdasarkan data berikut:
 - Servis Terakhir  : {servis.get('tanggal')} (ODO {servis.get('odo')} km, jenis {', '.join(servis.get('jenisServis', []))})
 - Masalah Saat Ini : {masalah}
 - Saran Mekanik    : {saran_mekanik}
-
-Kamu juga akan menghitung:
-1. Estimasi kilometer berikutnya untuk servis rutin (termasuk ganti oli)  
-2. Estimasi waktu berikutnya (dan sebutkan juga tanggal dan hari tepatnya dihitung dari tanggal servis terakhir)  
-
+Kamu bisa memberikan saran terkait kendaraan tersebut mengambil dari luar (berita terkini)
 Berikan jawaban dalam 1 paragraf singkat yang mudah dipahami.
+
+jika ada servis ganti oli maka kamu akan melakukan:
+1. Estimasi kilometer berikutnya untuk servis rutin dengan format KM_BERIKUTNYA
+2. Estimasi waktu berikutnya (dan sebutkan juga tanggal dan hari tepatnya dihitung dari tanggal servis terakhir) dengan format TANGGAL_BERIKUTNYA
 """
 
     try:
