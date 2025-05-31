@@ -1,4 +1,4 @@
-# File: app.py (backend AI untuk Flutter KelarServis, AUTO-PARSE REKOMENDASI!)
+# File: app.py (Backend AI untuk Flutter KelarServis, AI Otomatis & Output Rinci)
 
 from flask import Flask, request, jsonify
 from openai import OpenAI
@@ -22,38 +22,48 @@ def rekomendasi_servis():
     kendaraan = data.get("vehicle", {})
     servis = data.get("lastService", {})
 
-    # Ambil dua field baru
+    # Field baru untuk keluhan & saran mekanik
     masalah = data.get("masalahKendaraan", "Tidak ada masalah spesifik")
     saran_mekanik = data.get("saranMekanik", "Tidak ada saran mekanik")
 
-    # Buat prompt dengan semua data
+    # Prompt AI terbaru: personal, spesifik, dan patuh format
     prompt = f"""
-Kamu adalah asisten servis kendaraan yang andal.  
-Berikan rekomendasi servis berikutnya berdasarkan data berikut:
-- Tipe Kendaraan   : {kendaraan.get('tipe')}
-- Merk & Model     : {kendaraan.get('merk')} / {kendaraan.get('tipeKendaraan', '-')}
-- Tahun Perakitan  : {kendaraan.get('tahun')}
-- Bahan Bakar      : {kendaraan.get('bahanBakar')}
-- Servis Terakhir  : {servis.get('tanggal')} (ODO {servis.get('odo')} km, jenis {', '.join(servis.get('jenisServis', []))})
-- Masalah Saat Ini : {masalah}
-- Saran Mekanik    : {saran_mekanik}
-Kamu bisa memberikan saran terkait kendaraan tersebut mengambil dari luar (berita terkini)
-Berikan jawaban dalam 1 paragraf singkat yang mudah dipahami.
-Setelah paragraf rekomendasi, tambahkan 2 baris di akhir:
-jika ada servis ganti oli maka kamu akan melakukan:
-di baris terpisah TULIS DENGAN TEPAT seperti berikut:
+Kamu adalah asisten servis kendaraan berbasis AI yang sangat ahli dan akurat.
+Tugas kamu:
+1. Analisis semua data berikut secara menyeluruh.
+2. Berikan rekomendasi servis berikutnya secara RINCI dan TEPAT, dengan mempertimbangkan seluruh informasi di bawah ini:
+   - Tipe Kendaraan   : {kendaraan.get('tipe')}
+   - Merk & Model     : {kendaraan.get('merk')} / {kendaraan.get('tipeKendaraan', '-')}
+   - Tahun Perakitan  : {kendaraan.get('tahun')}
+   - Bahan Bakar      : {kendaraan.get('bahanBakar')}
+   - Servis Terakhir  : {servis.get('tanggal')} (ODO {servis.get('odo')} km, jenis {', '.join(servis.get('jenisServis', []))})
+   - Masalah Saat Ini : {masalah}
+   - Saran Mekanik    : {saran_mekanik}
+
+Gunakan setiap data di atas untuk membuat rekomendasi yang benar-benar personal, spesifik, dan informatif.
+Jelaskan alasan rekomendasi terkait kondisi kendaraan dan faktor-faktor yang relevan (misal: usia kendaraan, tipe mesin, bahan bakar, keluhan, dsb).
+
+Setelah rekomendasi, TAMBAHKAN 2 baris berikut PERSIS seperti format ini (tidak boleh ada narasi tambahan di bawahnya!):
 Saran Untuk pergantian oli mesin
-KM_BERIKUTNYA: [angka] (tanpa titik, tanpa satuan, hanya angka)
-TANGGAL_BERIKUTNYA: [tanggal lengkap, misal 15 Agustus 2025]
-Contoh:
+KM_BERIKUTNYA: [angka]     # hanya angka, misal 7000. BUKAN "ODO sekarang + 4000". Jangan tulis satuan. Jika tidak diketahui, tulis tanda minus.
+TANGGAL_BERIKUTNYA: [tanggal lengkap, misal 15 Agustus 2025]  # atau tanda minus jika tidak diketahui
+
+Contoh output yang BENAR:
+(paragraf rekomendasi)
+Saran Untuk pergantian oli mesin
 KM_BERIKUTNYA: 5000
 TANGGAL_BERIKUTNYA: 15 Agustus 2025
 
-Jika tidak ada estimasi, tulis:
-Saran Untuk pergantian oli mesin
-KM_BERIKUTNYA: -
-TANGGAL_BERIKUTNYA: -
-(hindari kata naratif di depan/di belakang tag!).
+Contoh yang SALAH (JANGAN BUAT INI!):
+KM_BERIKUTNYA: ODO sekarang + 4000
+KM_BERIKUTNYA: 10.000 km
+
+Instruksi:
+- Rekomendasi harus mempertimbangkan secara detail merk, tipe, tahun, bahan bakar, masalah, dan saran mekanik.
+- Format output di bagian akhir HARUS mengikuti contoh BENAR tanpa narasi tambahan.
+- Jika tidak ada data estimasi, tulis tanda "-".
+
+Tunjukkan hasil analisis dan rekomendasi kamu dengan bahasa yang jelas, padat, dan tidak mengulang informasi yang sama.
 """
 
     try:
@@ -66,7 +76,7 @@ TANGGAL_BERIKUTNYA: -
         )
         hasil = response.choices[0].message.content.strip()
 
-        # --- PATCH: Extract KM & Tanggal ---
+        # --- PATCH: Extract KM & Tanggal (Tetap Support Output yang Konsisten) ---
         km_match = re.search(r'KM_BERIKUTNYA:\s*([0-9\-]+)', hasil)
         tgl_match = re.search(r'TANGGAL_BERIKUTNYA:\s*([^\n\r]+)', hasil)
 
@@ -81,7 +91,7 @@ TANGGAL_BERIKUTNYA: -
 
         return jsonify({
             "rekomendasi": hasil,
-            "estimasiJarakKmBerikutnya": estimasi_km,            # patch for Flutter
+            "estimasiJarakKmBerikutnya": estimasi_km,      # Patch for Flutter
             "estimasiTanggalBerikutnya": estimasi_tgl
         })
 
