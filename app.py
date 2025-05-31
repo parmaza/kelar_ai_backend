@@ -44,14 +44,14 @@ Gunakan setiap data di atas untuk membuat rekomendasi yang benar-benar personal,
 Jelaskan alasan rekomendasi terkait kondisi kendaraan dan faktor-faktor yang relevan (misal: usia kendaraan, tipe mesin, bahan bakar, keluhan, dsb).
 
 Setelah rekomendasi, TAMBAHKAN 2 baris berikut PERSIS seperti format ini (tidak boleh ada narasi tambahan di bawahnya!):
-Saran Untuk pergantian oli mesin
+Saran Untuk pergantian oli mesin setelah menempuh jarak
 KM_BERIKUTNYA: [angka]     # hanya angka, misal 7000. BUKAN "ODO sekarang + 4000". Jangan tulis satuan. Jika tidak diketahui, tulis tanda minus.
 TANGGAL_BERIKUTNYA: [tanggal lengkap, misal 15 Agustus 2025]  # atau tanda minus jika tidak diketahui
 
 Contoh output yang BENAR:
 (paragraf rekomendasi)
-Saran Untuk pergantian oli mesin
-KM_BERIKUTNYA: 5000
+Saran Untuk pergantian oli mesin 
+(Jarak Tempuh) KM_BERIKUTNYA: 5000
 TANGGAL_BERIKUTNYA: 15 Agustus 2025
 
 Contoh yang SALAH (JANGAN BUAT INI!):
@@ -70,7 +70,7 @@ Tunjukkan hasil analisis dan rekomendasi kamu dengan bahasa yang jelas, padat, d
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
-                {"role": "system", "content": "Kamu adalah asisten servis kendaraan profesional."},
+                {"role": "system", "content": "Kamu adalah asisten servis kendaraan profesional, dan mekanik automotif yang handal"},
                 {"role": "user",   "content": prompt}
             ]
         )

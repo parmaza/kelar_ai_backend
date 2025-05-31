@@ -1,6 +1,6 @@
 import requests
 
-url = "http://localhost:5000/ai/rekomendasi"
+url = "https://kelar-ai-backend.onrender.com/ai/rekomendasi"
 payload = {
     "vehicle": {
       "tipe": "mobil",
