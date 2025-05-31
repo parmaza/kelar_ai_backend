@@ -1,8 +1,10 @@
-# File: app.py (untuk openai>=1.0.0)
+# File: app.py (backend AI untuk Flutter KelarServis, AUTO-PARSE REKOMENDASI!)
+
 from flask import Flask, request, jsonify
 from openai import OpenAI
 from dotenv import load_dotenv
 import os
+import re
 
 # Load .env
 load_dotenv()
@@ -51,7 +53,8 @@ Jika tidak ada estimasi, tulis:
 Saran Untuk pergantian oli mesin
 KM_BERIKUTNYA: -
 TANGGAL_BERIKUTNYA: -
-(hindari kata naratif di depan/di belakang tag!)."""
+(hindari kata naratif di depan/di belakang tag!).
+"""
 
     try:
         response = client.chat.completions.create(
@@ -62,7 +65,25 @@ TANGGAL_BERIKUTNYA: -
             ]
         )
         hasil = response.choices[0].message.content.strip()
-        return jsonify({"rekomendasi": hasil})
+
+        # --- PATCH: Extract KM & Tanggal ---
+        km_match = re.search(r'KM_BERIKUTNYA:\s*([0-9\-]+)', hasil)
+        tgl_match = re.search(r'TANGGAL_BERIKUTNYA:\s*([^\n\r]+)', hasil)
+
+        estimasi_km = km_match.group(1) if km_match else None
+        estimasi_tgl = tgl_match.group(1) if tgl_match else None
+
+        # Hilangkan nilai "-" sebagai null
+        if estimasi_km == '-' or not estimasi_km or not estimasi_km.strip():
+            estimasi_km = None
+        if estimasi_tgl == '-' or not estimasi_tgl or not estimasi_tgl.strip():
+            estimasi_tgl = None
+
+        return jsonify({
+            "rekomendasi": hasil,
+            "estimasiJarakKmBerikutnya": estimasi_km,            # patch for Flutter
+            "estimasiTanggalBerikutnya": estimasi_tgl
+        })
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
